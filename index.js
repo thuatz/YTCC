@@ -40,6 +40,10 @@ const urlGenerator = (videoId, languageCode) =>
   const port = 3000;
   app.get('/caption/:videoId/:languageCode', (req, res) => {
     const { videoId, languageCode } = req.params;
+    if (!videoId || !languageCode) {
+      res.send("404 Not found");
+      return;
+    }
     if (result[videoId] && typeof(result[videoId]) !== 'number') {
       const timeIndex = result[videoId].indexOf("expire=") + 7;
       const expTime = result[videoId].substr(timeIndex, 10);
