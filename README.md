@@ -4,6 +4,7 @@ NodeJS app to get Youtube Videos Captions
 Use this if you want to get videos captions programmatically.
 
 Some technical descriptions:
++ Example request: http://localhost:3000/caption?videoId={video_id}&languageCode={language_code}
 + 'maxConcurrency': The maximum Puppeteer's instance will be run at the same time, adjust it base on your server's performance.
 + If successful getting a caption, the server will return the caption's url.
 + If the job is queued, the server will return the number of waiting jobs ultil the video will be processed (e.g: 1, 2, 3, ...).

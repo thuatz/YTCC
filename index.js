@@ -38,8 +38,12 @@ const urlGenerator = (videoId, languageCode) =>
   const app = express();
   app.use(cors());
   const port = 3000;
-  app.get('/caption/:videoId/:languageCode', (req, res) => {
-    const { videoId, languageCode } = req.params;
+  app.get('/caption', (req, res) => {
+    const { videoId, languageCode } = req.query;
+    if (!videoId || !languageCode) {
+      res.send("Not enough args");
+      return;
+    }
     if (result[videoId] && typeof(result[videoId]) !== 'number') {
       const timeIndex = result[videoId].indexOf("expire=") + 7;
       const expTime = result[videoId].substr(timeIndex, 10);
