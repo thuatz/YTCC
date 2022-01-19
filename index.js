@@ -24,6 +24,7 @@ const cors = require('cors');
       }
     });
     await page.goto(url);
+    await page.waitForTimeout(1000);
     await page.close();
     console.log(videoId, checked);
     if (!checked) {
