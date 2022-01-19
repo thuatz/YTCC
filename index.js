@@ -2,9 +2,6 @@ const { Cluster } = require('puppeteer-cluster');
 const express = require('express');
 const cors = require('cors');
 
-const urlGenerator = (videoId, languageCode) => 
-  `https://www.youtube.com/embed/${videoId}?autoplay=1&cc_load_policy=1&cc_lang_pref=${languageCode}`;
-
 (async () => {
   let queueCount = 0;
   let result = [];
@@ -13,7 +10,7 @@ const urlGenerator = (videoId, languageCode) =>
     maxConcurrency: 1,
   });
   await cluster.task(async ({ page, data: url }) => {
-    const videoId = url.substr(30, 11);
+    const videoId = url.substr(17, 11);
     let checked = false;
     page.on("request", async (request) => {
       if (request._url.indexOf('timedtext') >= 0) {
@@ -39,8 +36,8 @@ const urlGenerator = (videoId, languageCode) =>
   app.use(cors());
   const port = 3000;
   app.get('/caption', (req, res) => {
-    const { videoId, languageCode } = req.query;
-    if (!videoId || !languageCode) {
+    const { videoId } = req.query;
+    if (!videoId) {
       res.send("Not enough args");
       return;
     }
@@ -56,7 +53,7 @@ const urlGenerator = (videoId, languageCode) =>
       }
     }
     if (typeof(result[videoId]) === 'undefined') {
-      cluster.queue(urlGenerator(videoId, languageCode));
+      cluster.queue(`https://youvi.be/${videoId}`);
       queueCount++;
       result[videoId] = queueCount;
     }
